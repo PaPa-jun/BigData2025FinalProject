@@ -26,7 +26,7 @@ if __name__ == "__main__":
             configs["BUILD_INDEX_TABLE"],
             configs["INDEX_TABLE_NAME"],
             configs["INDEX_SOURCE_PATH"],
-            configs["KEYWORDS_COURCE_PATH"],
+            configs["KEYWORDS_SOURCE_PATH"],
             configs["BATCH_SIZE"],
         )
 

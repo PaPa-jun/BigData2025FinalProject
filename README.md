@@ -40,6 +40,7 @@ A pseudo-distributed file storage system and search engine built on top of Hadoo
 - Python 3.12 or higher
 - Docker and Docker Compose (for the Hadoop-HBase cluster)
 - At least 4GB RAM for smooth operation of the Docker containers
+- Or you can use your local Hadoop and Hbase.
 
 ### Python Dependencies
 All dependencies are managed through `pyproject.toml` and can be installed using `uv` or standard `pip`.
@@ -48,8 +49,8 @@ All dependencies are managed through `pyproject.toml` and can be installed using
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repository-url>
-cd <project-directory>
+git clone https://github.com/PaPa-jun/BigData2025FinalProject.git
+cd BigData2025FinalProject
 ```
 
 ### 2. Install Python Dependencies
@@ -89,8 +90,8 @@ HBASE_PORT = 9090                       # HBase Thrift server port
 INDEX_TABLE_NAME = "file_index"         # HBase table name for storing file index
 
 # App Configuration
-INITIALIZE = True                       # Whether to initialize the system on startup (usually set to True for the first run)
-REDIRECT = True                         # Whether to redirect HDFS URLs
+INITIALIZE = False                      # Whether to initialize the system on startup (usually set to True for the first run)
+REDIRECT = False                        # Whether to redirect HDFS URLs
 
 # Redirect Configuration (useful only if REDIRECT is True)
 ORIGINAL_HOST = "hadoop-master"         # Original hostname in HDFS URLs
@@ -109,13 +110,13 @@ OVERWRITE = False                       # Whether to overwrite existing files
 
 # Table building Configuration (useful only if BUILD_INDEX_TABLE is True)
 INDEX_SOURCE_PATH = "source/keyword_index.json"         # Path to keyword index file
-KEYWORDS_COURCE_PATH = "source/file_detail.json"        # Path to file detail file
+KEYWORDS_SOURCE_PATH = "source/file_detail.json"        # Path to file detail file
 BATCH_SIZE = 50                         # Batch size for HBase operations
 
 # FastAPI Configuration
 API_HOST = "localhost"                  # FastAPI server host
 API_PORT = 8000                         # FastAPI server port
-RELOAD = True                           # Whether to enable auto-reload in development
+RELOAD = False                          # Whether to enable auto-reload in development
 
 # Web Server Configuration
 WEB_DIR = "web"                         # Directory containing web interface files
@@ -171,7 +172,8 @@ The `docker-compose.yaml` file defines a single service that:
   3. Start HDFS services
   4. Start YARN services
   5. Start HBase services
-  6. Keep the container running with `tail -f /dev/null`
+  6. Start HBase thrift services
+  7. Keep the container running with `tail -f /dev/null`
 
 ## Development
 
@@ -197,9 +199,8 @@ The `docker-compose.yaml` file defines a single service that:
 
 #### Getting file details
 
-You have to get the detail infomation about your files and construct as
+You have to get the detailed information about your files and construct the `file_detail.json` as follows:
 ```json
-//file_detail.json
 {
     "/dfs/path/to/file1.docx": {
         "keywords": [
@@ -218,9 +219,8 @@ You have to get the detail infomation about your files and construct as
 ```
 
 #### Creating json files
-You have to create your own searching index and construct it as
+You have to create your own searching index in `keyword_index.json` as follows:
 ```json
-//keyword_index.json
 {
     "key1": [
         "/dfs/path/to/file1.docx",

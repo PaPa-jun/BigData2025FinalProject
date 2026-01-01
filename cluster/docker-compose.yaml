@@ -20,5 +20,6 @@ services:
       $${HADOOP_HOME}/sbin/start-dfs.sh &&
       $${HADOOP_HOME}/sbin/start-yarn.sh &&
       $${HBASE_HOME}/bin/start-hbase.sh &&
+      $${HBASE_HOME}/bin/hbase-daemon.sh start thrift &&
       tail -f /dev/null
       "
