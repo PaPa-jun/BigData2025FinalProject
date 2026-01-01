@@ -86,6 +86,7 @@ def execute_search(db: HBaseDB, table_name: str, keywords: list[str]) -> SearchR
     items = []
     row_keys = set()
     file_ids = set()
+    db.ensure_connection()
     for keyword in keywords:
         results = db.include_matching(table_name, keyword)
         for result in results:
@@ -171,6 +172,7 @@ def build_index_table(
         "metadata": dict(),
     }
 
+    db.ensure_connection()
     if table_name.encode() in db.connection.tables():
         db.delete_table(table_name)
     db.create_table(table_name, column_families)

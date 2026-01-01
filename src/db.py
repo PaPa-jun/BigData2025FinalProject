@@ -1,12 +1,34 @@
 import happybase
+from thriftpy2.transport import TTransportException
 
 
 class HBaseDB:
     def __init__(self, host: str = "localhost", port: int = 9090):
-        self.connection = happybase.Connection(host=host, port=port)
-        self.connection.open()
+        self.host = host
+        self.port = port
+        self.connection = None
+        self._connect()
+
+    def _connect(self):
+        try:
+            if self.connection:
+                self.connection.close()
+            self.connection = happybase.Connection(host=self.host, port=self.port)
+            self.connection.open()
+            print(f"Connection to HBase server successful: {self.host}:{self.port}")
+        except Exception as e:
+            print(f"Connection to HBase server failed: {e}")
+            raise
+
+    def ensure_connection(self):
+        try:
+            self.connection.tables()
+        except (TTransportException, AttributeError, Exception) as e:
+            print(f"Connection invalid: {e}, reconnecting...")
+            self._connect()
 
     def describe_db(self) -> dict:
+        self.ensure_connection()
         tables = self.connection.tables()
         description = {}
         for table in tables:
@@ -17,6 +39,7 @@ class HBaseDB:
         return description
 
     def describe_table(self, table_name: str, rows: int = 5) -> list[dict]:
+        self.ensure_connection()
         table = self.connection.table(table_name)
         data = []
         for key, row in table.scan(limit=rows):
@@ -25,12 +48,15 @@ class HBaseDB:
         return data
 
     def create_table(self, table_name: str, column_families: dict) -> None:
+        self.ensure_connection()
         self.connection.create_table(table_name, column_families)
 
     def delete_table(self, table_name: str) -> None:
+        self.ensure_connection()
         self.connection.delete_table(table_name, disable=True)
 
     def include_matching(self, table_name: str, query: str) -> list[dict]:
+        self.ensure_connection()
         results = []
         exists = set()
         filter_str = f"RowFilter(=, 'substring:{query}')"
