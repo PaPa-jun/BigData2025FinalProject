@@ -175,6 +175,36 @@ The `docker-compose.yaml` file defines a single service that:
   6. Start HBase thrift services
   7. Keep the container running with `tail -f /dev/null`
 
+### Verify Docker Container Health
+After starting your Docker container, you can verify the cluster status by executing the following commands:
+```sh
+# Access the container shell
+docker exec -it hadoop-hbase-single-node /bin/bash
+
+# Check running Java processes
+jps
+```
+If all services are running correctly, you should see output similar to:
+```
+195 NameNode            # Name Node server
+333 DataNode            # Data Node server
+513 SecondaryNameNode   # Srcondary NameNode server
+712 ResourceManager     # Resource Manager server
+1022 NodeManager        # Node Manager server
+1526 HQuorumPeer        # HBase ZooKeeper service
+1642 HMaster            # HBase master server
+1821 HRegionServer      # HBase region server
+2073 ThriftServer       # HBase Thrift API server
+2513 Jps                # This command
+```
+
+**Key Services to Verify:**
+- **Hadoop Core Services**: NameNode, DataNode, SecondaryNameNode
+- **YARN Services**: ResourceManager, NodeManager  
+- **HBase Services**: HMaster, HRegionServer, HQuorumPeer, ThriftServer
+
+> **Note**: The process IDs (first column) may vary in your environment. Focus on ensuring all critical services are present in the output. If any essential service is missing, check the container logs using `docker logs hadoop-hbase-single-node` for troubleshooting.
+
 ## Development
 
 ### Directory Structure
@@ -200,7 +230,7 @@ The `docker-compose.yaml` file defines a single service that:
 #### Getting file details
 
 You have to get the detailed information about your files and construct the `file_detail.json` as follows:
-```json
+```
 {
     "/dfs/path/to/file1.docx": {
         "keywords": [
@@ -220,7 +250,7 @@ You have to get the detailed information about your files and construct the `fil
 
 #### Creating json files
 You have to create your own searching index in `keyword_index.json` as follows:
-```json
+```
 {
     "key1": [
         "/dfs/path/to/file1.docx",
@@ -283,11 +313,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Apache Hadoop Community
-- Apache HBase Community
-- FastAPI Team
-- Docker Community
+- [Apache Hadoop Community](https://hadoop.apache.org)
+- [Apache HBase Community](https://hbase.apache.org)
+- [FastAPI Team](https://fastapi.tiangolo.com)
+- [Docker Community](https://www.docker.com)
 
 ---
 
-**Note**: This README assumes you have basic knowledge of Hadoop, HBase, and Docker. For detailed documentation on these technologies, please refer to their official documentation.
+**Note**: This `README` assumes you have basic knowledge of Hadoop, HBase, and Docker. For detailed documentation on these technologies, please refer to their official documentation.
