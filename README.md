@@ -272,7 +272,7 @@ Set `BUILD_INDEX_TABLE = True` in `configs.cfg` to build the HBase index table f
 The FastAPI backend provides the following endpoints:
 
 - `GET /search/{query}`: Search for files using fuzzy matching
-- `GET /download/{path}`: Download a file by its path on hdfs
+- `GET /download/{path}`: Get Download URL by file's path on hdfs
 
 ## Troubleshooting
 
