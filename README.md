@@ -172,7 +172,7 @@ The `docker-compose.yaml` file defines a single service that:
   3. Start HDFS services
   4. Start YARN services
   5. Start HBase services
-  6. Start HBase thrift services
+  6. Start HBase thrift server
   7. Keep the container running with `tail -f /dev/null`
 
 ### Verify Docker Container Health

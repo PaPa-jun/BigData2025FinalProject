@@ -219,7 +219,6 @@ def build_index_table(
 
 
 def get_folder_size(folder_path):
-    """计算文件夹的总大小"""
     total_size = 0
     for dirpath, _, filenames in os.walk(folder_path):
         for filename in filenames:
