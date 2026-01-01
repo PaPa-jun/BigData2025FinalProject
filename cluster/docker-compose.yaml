@@ -1,0 +1,24 @@
+services:
+  hadoop-hbase:
+    build: .
+    container_name: hadoop-hbase-single-node
+    hostname: hadoop-master
+    ports:
+      - "9870:9870"
+      - "8088:8088"
+      - "9000:9000"
+      - "9864:9864"
+      - "9866:9866"
+      - "9090:9090"
+      - "16010:16010"
+    privileged: true
+    restart: unless-stopped
+    command: >
+      /bin/bash -c "
+      service ssh restart &&
+      $${HADOOP_HOME}/bin/hdfs namenode -format -force -nonInteractive &&
+      $${HADOOP_HOME}/sbin/start-dfs.sh &&
+      $${HADOOP_HOME}/sbin/start-yarn.sh &&
+      $${HBASE_HOME}/bin/start-hbase.sh &&
+      tail -f /dev/null
+      "

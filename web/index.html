@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileFinder - 智能文件搜索引擎</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <header class="search-header">
+            <div class="logo-container">
+                <span class="logo-icon material-icons">folder_open</span>
+                <h1>FileFinder</h1>
+            </div>
+            <div class="search-container">
+                <span class="search-icon material-icons">search</span>
+                <input type="text" v-model="searchQuery" @keyup.enter="performSearch" placeholder="请输入搜索关键词..."
+                    class="search-input">
+                <button @click="performSearch" class="search-button">
+                    <span class="material-icons">search</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="search-main">
+            <div class="search-stats" v-if="searchResults.num > 0">
+                <span class="material-icons stats-icon">analytics</span>
+                找到约 {{ searchResults.num }} 个结果，用时 {{ processTime }} 秒
+            </div>
+
+            <div class="search-results">
+                <div v-if="isLoading" class="loading">
+                    <div class="spinner"></div>
+                    <p>搜索中...</p>
+                </div>
+
+                <div v-else-if="error" class="error-message">
+                    <span class="material-icons error-icon">error_outline</span>
+                    {{ error }}
+                </div>
+
+                <div v-else-if="searchResults.num === 0 && hasSearched" class="no-results">
+                    <div class="no-results-icon material-icons">search_off</div>
+                    <p>没有找到相关文件</p>
+                </div>
+
+                <div v-else class="results-list">
+                    <div v-for="(item, index) in searchResults.items" :key="item.id" class="result-item">
+                        <div class="result-header">
+                            <h3 class="result-title">
+                                <a @click.prevent="handleDownload(item.path, item.name)" class="download-link">
+                                    <span class="material-icons file-icon">insert_drive_file</span>
+                                    {{ item.name }}
+                                </a>
+                            </h3>
+                            <span class="result-category">{{ item.category }}</span>
+                        </div>
+                        <div class="result-meta">
+                            <span class="result-size">
+                                <span class="material-icons size-icon">storage</span>
+                                大小: {{ formatSize(item.size) }}
+                            </span>
+                            <span class="result-keywords">
+                                关键词:
+                                <span v-for="(keyword, kIndex) in item.keywords" :key="kIndex" class="keyword-tag">
+                                    {{ keyword }}
+                                </span>
+                            </span>
+                        </div>
+                        <div v-if="item.high_freq_words.length > 0" class="result-high-freq">
+                            <span class="material-icons high-freq-icon">trending_up</span>
+                            <span class="high-freq-label">高频词:</span>
+                            <span v-for="(word, wIndex) in item.high_freq_words" :key="wIndex" class="high-freq-word">
+                                {{ word }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="search-footer">
+            <div class="footer-content">
+                <div class="copyright">
+                    <span class="material-icons copyright-icon">copyright</span>
+                    <span>FileFinder 智能文件搜索引擎 © 2026</span>
+                </div>
+                <div class="footer-details">
+                    <span>版本 1.0.0 | 基于 Vue.js 3 构建 | 数据来源：中国科学技术大学官方网站</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 引入JS文件 -->
+    <script src="app.js"></script>
+</body>
+
+</html>

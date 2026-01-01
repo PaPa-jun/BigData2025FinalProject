@@ -1,0 +1,15 @@
+[project]
+name = "bigdata"
+version = "0.1.0"
+description = "Big data experiments project, implemented by YufengPeng & XiaoxiongPang."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.127.0",
+    "happybase>=1.3.0",
+    "hdfs>=2.7.3",
+    "jieba>=0.42.1",
+    "pydantic>=2.12.5",
+    "tqdm>=4.67.1",
+    "uvicorn>=0.40.0",
+]
