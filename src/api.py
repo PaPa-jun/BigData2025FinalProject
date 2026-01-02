@@ -45,11 +45,14 @@ def create_app(db_cli: HBaseDB, configs: dict) -> FastAPI:
             redirect_url = response.headers.get("Location")
             if not redirect_url:
                 raise HTTPException(
-                    status_code=500, detail="NameNode返回307状态码但未提供Location头"
+                    status_code=500,
+                    detail="NameNode returned a 307 status code but did not provide a Location header.",
                 )
         if configs["REDIRECT"] is True:
             return DownloadResponse(
-                download_url=redirect_url.replace("hadoop-master", "localhost")
+                download_url=redirect_url.replace(
+                    configs["ORIGINAL_HOST"], configs["REPLACED_HOST"]
+                )
             )
         else:
             return DownloadResponse(download_url=redirect_url)
