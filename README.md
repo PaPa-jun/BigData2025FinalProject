@@ -83,6 +83,7 @@ Before running the application, you need to configure the settings in `configs.c
 # HDFS Configuration
 HDFS_URL = "http://localhost:9870"      # HDFS web interface URL
 HDFS_USER = root                        # HDFS user name
+HDFS_DATA_PATH = "/"                    # HDFS path to your data
 
 # HBase Configuration
 HBASE_HOST = "localhost"                # HBase server host
@@ -102,7 +103,6 @@ UPLOAD_DATA = False                     # Whether to upload data to HDFS
 BUILD_INDEX_TABLE = False               # Whether to build the HBase index table
 
 # File uploading Configuration (useful only if UPLOAD_DATA is True)
-HDFS_PATH = "/"                         # HDFS path to upload files to
 LOCAL_PATH = "source/data"              # Local directory or file to upload
 N_THREADS = 10                          # Number of threads for parallel upload
 CHUNK_SIZE = 683147264                  # Chunk size for upload (64 MB)

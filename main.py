@@ -18,7 +18,7 @@ if __name__ == "__main__":
             db_cli,
             hdfs,
             configs["UPLOAD_DATA"],
-            configs["HDFS_PATH"],
+            configs["HDFS_DATA_PATH"],
             configs["LOCAL_PATH"],
             configs["N_THREADS"],
             configs["CHUNK_SIZE"],
