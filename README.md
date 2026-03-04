@@ -188,7 +188,7 @@ If all services are running correctly, you should see output similar to:
 ```
 195 NameNode            # Name Node server
 333 DataNode            # Data Node server
-513 SecondaryNameNode   # Srcondary NameNode server
+513 SecondaryNameNode   # Secondary NameNode server
 712 ResourceManager     # Resource Manager server
 1022 NodeManager        # Node Manager server
 1526 HQuorumPeer        # HBase ZooKeeper service
